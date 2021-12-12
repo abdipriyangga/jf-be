@@ -27,6 +27,7 @@ const Auth = sequelize.define("users", {
     }
   },
   jenisKelamin: Sequelize.STRING,
+  images: Sequelize.STRING,
 });
 
 module.exports = Auth;
