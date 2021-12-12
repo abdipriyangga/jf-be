@@ -74,3 +74,17 @@ exports.deleteProduct = async (req, res) => {
   await product.destroy();
   return formResponse(res, 200, `Delete product id: ${id} successfully!`, product);
 };
+
+exports.getProductId = async (req, res) => {
+  const { id } = req.params;
+  const product = await productModel.findByPk(id);
+  try {
+    if (product) {
+      return formResponse(res, 200, `Detail product with id: ${id}`, product);
+    } else {
+      return formResponse(res, 404, "Sorry product not found!");
+    }
+  } catch (error) {
+    return formResponse(res, 400, error);
+  }
+};
