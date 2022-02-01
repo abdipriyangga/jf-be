@@ -1,10 +1,10 @@
 const productModel = require("../models/products.model");
 const { response: formResponse } = require("../helpers/formResponse");
-const { APP_UPLOAD_ROUTE, APP_URL } = process.env;
+const { APP_UPLOAD_ROUTE } = process.env;
 
 exports.createProduct = async (req, res) => {
   const { id } = req.authUser;
-  const { productName, price, description } = req.body;
+  const { productName, price, description, stock } = req.body;
   try {
     if (req.file) {
       req.body.images = req.file ? `${APP_UPLOAD_ROUTE}/${req.file.filename}` : null;
@@ -14,7 +14,8 @@ exports.createProduct = async (req, res) => {
       productName: productName,
       price: price,
       images: req.body.images,
-      description: description
+      description: description,
+      stock: stock
     });
     await product.save();
     if (product) {
@@ -48,22 +49,9 @@ exports.updateProduct = async (req, res) => {
   if (product === null) {
     return formResponse(res, 404, "Sorry product not found!");
   } else {
-    if (req.file) {
-      req.body.images = req.file ? `${APP_UPLOAD_ROUTE}/${req.file.filename}` : null;
-      product.set(req.body);
-      await product.save();
-      if (product.images !== null && !product.images.startsWith("http")) {
-        product.images = `${APP_URL}${product.images}`;
-      }
-      return formResponse(res, 200, "Update product successfully!", product);
-    } else {
-      product.set(req.body);
-      await product.save();
-      if (product.images !== null && !product.images.startsWith("http")) {
-        product.images = `${APP_URL}${product.images}`;
-      }
-      return formResponse(res, 200, "Update product successfully!", product);
-    }
+    product.set(req.body);
+    await product.save();
+    return formResponse(res, 200, "Update product successfully!", product);
   }
 };
 

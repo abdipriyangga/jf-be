@@ -8,6 +8,7 @@ const Product = sequelize.define("products", {
   price: Sequelize.INTEGER,
   images: Sequelize.STRING,
   description: Sequelize.STRING,
+  stock: Sequelize.INTEGER,
 });
 
 Product.belongsTo(UserModel, { sourceKey: "id" });

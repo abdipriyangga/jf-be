@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
       // console.log('kondisi dua: ', checkPass);
       // console.log('kondisi dua: ', password);
       if (checkPass) {
-        const token = jwt.sign({ id: auth.id, email: auth.email }, APP_SECRET_KEY, { expiresIn: "1h" });
+        const token = jwt.sign({ id: auth.id, email: auth.email }, APP_SECRET_KEY, { expiresIn: 60 * 60 });
         return formResponse(res, 200, "login success!", { token, id: auth.id });
       } else {
         return formResponse(res, 400, "Wrong email or password!");
